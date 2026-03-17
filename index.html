@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Multi-Subjek RGB Chatbot - VIP Access</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* CSS ASLI */
+body {
+margin:0;
+padding:0;
+font-family:'Poppins', sans-serif;
+background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8);
+background-size: 400% 400%;
+animation: rgbShift 12s ease infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+color: #e0e0e0;
+}
+
+@keyframes rgbShift {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+.marquee-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10002;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.8);
+    padding: 15px 0; 
+}
+
+.marquee-text {
+    display: inline-block;
+    font-size: 18px; 
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: marqueeMove 40s linear infinite, marqueeRGB 3s linear infinite;
+}
+
+@keyframes marqueeMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-200%); }
+}
+
+@keyframes marqueeRGB {
+    0% { color: #ff0000; }
+    20% { color: #fffb00; }
+    40% { color: #48ff00; }
+    60% { color: #00ffd5; }
+    80% { color: #002bff; }
+    100% { color: #ff0000; }
+}
+
+#rocket-container {
+    position: fixed;
+    bottom: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 80px;
+    z-index: 10000;
+    display: none;
+}
+
+.rocket-launch {
+    display: block !important;
+    animation: launch 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+@keyframes launch {
+    0% { bottom: -150px; transform: translateX(-50%) scale(1); }
+    50% { bottom: 20%; transform: translateX(-50%) scale(1.2); }
+    100% { bottom: 120%; transform: translateX(-50%) scale(0.5); opacity: 0; }
+}
+
+.chat-container {
+background: rgba(20, 20, 20, 0.85);
+width: 90%;
+max-width: 450px;
+height: 600px; 
+border-radius: 30px;
+box-shadow: 0 0 40px rgba(0,0,0,0.6), inset 0 0 1px 1px rgba(255,255,255,0.2);
+display: flex;
+flex-direction: column;
+padding: 25px;
+backdrop-filter: blur(25px);
+border: 1px solid rgba(255, 255, 255, 0.1);
+position: relative;
+margin-top: 60px; 
+}
+
+h2 {
+text-align: center;
+font-family: 'Playfair Display', serif;
+color: #d4af37;
+text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+margin-top: 0;
+letter-spacing: 1px;
+}
+
+#timer-wrapper {
+background: rgba(212, 175, 55, 0.1);
+color: #d4af37;
+padding: 8px;
+border-radius: 12px;
+margin-bottom: 10px;
+text-align: center;
+font-weight: bold;
+border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+#ai-select {
+margin-bottom: 10px;
+padding: 10px;
+border-radius: 12px;
+font-weight: bold;
+background: #111;
+color: #d4af37;
+border: 1px solid #d4af37;
+cursor: pointer;
+transition: 0.3s;
+}
+
+#status-bar {
+font-size: 10px;
+background: rgba(0, 0, 0, 0.5);
+color: #aaa;
+padding: 8px;
+border-radius: 12px;
+margin-bottom: 10px;
+text-align: center;
+letter-spacing: 0.5px;
+border: 1px solid rgba(255,255,255,0.05);
+}
+
+#chat-box {
+flex-grow: 1;
+overflow-y: auto;
+padding: 15px;
+border-radius: 15px;
+background: rgba(255, 255, 255, 0.03);
+display: flex;
+flex-direction: column;
+gap: 12px;
+border: 1px solid rgba(255,255,255,0.05);
+margin-bottom: 15px;
+}
+
+#chat-box::-webkit-scrollbar { width: 5px; }
+#chat-box::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+.msg { padding: 12px 16px; border-radius: 18px; max-width: 85%; font-size: 14px; line-height: 1.5; word-wrap: break-word; }
+.ai-msg { background: rgba(255, 255, 255, 0.07); color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(255,255,255,0.1); }
+.user-msg { background: linear-gradient(135deg, #d4af37, #aa891a); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+
+.yt-card { background: #000; border: 1px solid #ff0000; border-radius: 10px; padding: 10px; margin-top: 5px; }
+.yt-link { color: #ff0000; text-decoration: none; font-weight: bold; font-size: 12px; }
+.lyrics-box { background: rgba(212, 175, 55, 0.1); border: 1px dashed #d4af37; padding: 10px; border-radius: 10px; font-style: italic; font-size: 13px; }
+.gif-result { width: 100%; border-radius: 10px; margin-top: 5px; }
+
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+.input-row { display: flex; gap: 10px; }
+input { flex-grow: 1; padding: 14px; border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.3); background: rgba(0, 0, 0, 0.3); color: white; outline: none; }
+button { padding: 10px 18px; background: #d4af37; color: #000; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+
+.attachment-preview { font-size: 12px; color: #d4af37; margin-bottom: 5px; display: none; }
+.file-btn { background: #444; color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center; width: 45px; }
+
+.web-btn-container { display: flex; gap: 5px; margin-bottom: 5px; }
+.web-link-btn { flex: 1; padding: 5px; font-size: 10px; background: rgba(255,255,255,0.1); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; text-decoration: none; text-align: center; }
+
+#overlay {
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.95);
+color: #d4af37;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+border-radius: 20px;
+z-index: 10;
+}
+
+#login-screen {
+position:fixed; 
+top:0; left:0; 
+width:100%; height:100%; 
+z-index:9999; 
+display:flex; 
+justify-content:center; 
+align-items:center; 
+background: radial-gradient(circle, #1e3a8a, #1e40af, #1e3a8a);
+overflow: hidden;
+}
+
+#login-screen::before {
+content: "";
+position: absolute;
+width: 200%; height: 200%;
+background-image: radial-gradient(#d4af37 1px, transparent 1px);
+background-size: 50px 50px;
+animation: particleMove 20s linear infinite;
+opacity: 0.3;
+}
+
+@keyframes particleMove {
+from { transform: translateY(0); }
+to { transform: translateY(-50%); }
+}
+
+.login-card, .verif-card, .captcha-card {
+background: rgba(239, 246, 255, 0.9);
+padding: 40px;
+border-radius: 40px;
+border: 2px solid rgba(212, 175, 55, 0.5);
+width: 350px;
+text-align: center;
+backdrop-filter: blur(20px);
+box-shadow: 0 20px 50px rgba(0, 0, 50, 0.4);
+position: relative;
+z-index: 1;
+animation: cardPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cardPop {
+from { transform: scale(0.8); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+
+.login-card h2, .verif-card h2, .captcha-card h2 {
+color: #b8860b !important;
+font-family: 'Playfair Display', serif;
+font-size: 28px;
+margin-bottom: 10px;
+}
+
+.login-input {
+width: 100%;
+padding: 15px;
+margin: 12px 0;
+border-radius: 15px;
+border: 1px solid #e0c068;
+background: rgba(255, 255, 255, 0.9);
+color: #5d4037;
+box-sizing: border-box;
+font-weight: 500;
+}
+
+.login-btn {
+width: 100%;
+padding: 16px;
+background: #111;
+color: #fff;
+border: none;
+border-radius: 15px;
+font-weight: 600;
+letter-spacing: 2px;
+cursor: pointer;
+margin-top: 20px;
+position: relative;
+overflow: hidden;
+z-index: 1;
+box-shadow: 0 0 15px rgba(0,0,0,0.2);
+animation: buttonRGB 3s linear infinite;
+border: 2px solid transparent;
+}
+
+.wavy-rgb-text {
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: waveRGB 2s linear infinite, wavyMove 1.5s ease-in-out infinite;
+}
+
+@keyframes waveRGB {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes wavyMove {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.disabled-btn {
+    background: #555 !important;
+    cursor: not-allowed !important;
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+@keyframes buttonRGB {
+0% { box-shadow: 0 0 10px #ff0000; border-color: #ff0000; }
+33% { box-shadow: 0 0 10px #00ff00; border-color: #00ff00; }
+66% { box-shadow: 0 0 10px #0000ff; border-color: #0000ff; }
+100% { box-shadow: 0 0 10px #ff0000; border-color: #ff0000; }
+}
+
+.login-btn::after {
+content: "";
+position: absolute;
+top: -50%;
+left: -60%;
+width: 50%;
+height: 200%;
+background: rgba(255, 255, 255, 0.4);
+transform: rotate(30deg);
+transition: none;
+animation: shineEffect 2.5s infinite;
+}
+
+@keyframes shineEffect {
+0% { left: -60%; }
+100% { left: 150%; }
+}
+
+.rgb-text {
+    background: linear-gradient(90deg, #b8860b, #ff0000, #00ff00, #0000ff, #b8860b);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: goldShimmer 3s linear infinite;
+    font-weight: 600;
+}
+
+@keyframes goldShimmer {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+}
+
+.hidden { display: none; }
+
+/* UPDATE POSISI SETTINGS: POJOK KANAN BAWAH */
+.settings-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 10001;
+}
+
+.settings-trigger {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #d4af37;
+    border: 3px solid #fff;
+    cursor: pointer;
+    font-size: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.settings-trigger:hover { transform: rotate(90deg); }
+
+.settings-menu {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    background: #111;
+    border: 2px solid #d4af37;
+    border-radius: 20px;
+    width: 200px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+.settings-menu button {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    color: #d4af37;
+    border: none;
+    border-bottom: 1px solid rgba(212,175,55,0.2);
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+}
+
+.settings-menu button:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+#history-screen, .game-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+    z-index: 10005;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* STYLE GAME */
+.game-container {
+    background: #1a1a1a;
+    border: 2px solid #d4af37;
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.rgb-score {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    animation: marqueeRGB 3s linear infinite;
+}
+
+/* TICTACTOE RGB */
+.ttt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+.ttt-cell {
+    aspect-ratio: 1;
+    background: #333;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.ttt-cell.rgb-x { animation: marqueeRGB 1s linear infinite; }
+.ttt-cell.rgb-o { animation: marqueeRGB 2s linear infinite; filter: hue-rotate(90deg); }
+
+/* RUNNER GAME */
+#runner-canvas {
+    background: #222;
+    border: 2px solid #d4af37;
+    width: 100%;
+    max-width: 300px;
+    height: 400px;
+}
+.runner-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* BLOCK BLAST */
+.bb-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+    background: #444;
+    padding: 5px;
+}
+.bb-cell {
+    aspect-ratio: 1;
+    background: #222;
+}
+
+body.light-mode {
+    background: #f0f2f5;
+    animation: none;
+}
+body.light-mode .chat-container {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+body.light-mode .ai-msg {
+    background: #f1f0f0;
+    color: #333;
+    border: 1px solid #eee;
+}
+</style>
+</head>
+
+<body onclick="playMusic()">
+
+<div class="marquee-container">
+    <div class="marquee-text">
+        SELAMAT DATANG KE AI LUXURY VIP KAMI, AI KAMI SEDANG BELAJAR MEMAHAMI PESAN ANDA , PEMBUAT : MUHAMAD FARIS RAMADHAN, KOTA : SEMARANG, PROVINSI : JAWA TENGAH
+CHAT GMAIL: RAMADHANFARIS893@GMAIL.COM | 082197710482 | BERI RATING BINTANG ⭐⭐⭐⭐⭐ | IG: @RIZ_SUKA_SPRINT
+    </div>
+</div>
+
+<div id="rocket-container">🚀✈️🚀</div>
+
+<div id="login-screen">
+    <div class="login-card" id="card-step-1">
+        <h2>SYARAT LOGIN KE AI </h2>
+        <p style="color:#8b7355; font-size:16px; margin-bottom:20px">AI KAMI BERBASIS VIP DAN NO LIMIT</p>
+        <input type="text" id="first-name" class="login-input" placeholder="NAMA DEPAN">
+        <input type="text" id="last-name" class="login-input" placeholder="NAMA BELAKANG">
+        <input type="number" id="user-age" class="login-input" placeholder="UMUR PENGGUNA">
+        <button class="login-btn" onclick="sendCode()">BUAT AKUN 🍁🍁</button>
+    </div>
+
+    <div class="verif-card hidden" id="card-step-2">
+        <h2>VERIFICATION KODE</h2>
+        <p class="rgb-text" style="font-size:13px; margin-bottom:26px">Memvalidasi keamanan Kode...</p>
+        <input type="text" id="verify-code" class="login-input" placeholder="6 Digit Kode Rahasia">
+        <button class="login-btn" onclick="goToCaptcha()">➡️ VERIFIKASI & NEXT ⬅️</button>
+    </div>
+
+    <div class="captcha-card hidden" id="card-step-3">
+        <h2>SECURITY CHECK</h2>
+        <div class="wavy-rgb-text" id="captcha-text">TUNGGU SELAMA ( 10 DETIK ) UNTUK MEMVERIFIKASI ANDA BUKAN ROBOT 🤖</div>
+        <div id="captcha-timer" style="font-size: 45px; font-weight: bold; color: #111; margin: 20px 0;">10</div>
+        <button id="final-login-btn" class="login-btn disabled-btn" disabled onclick="verifyLogin()">MENUNGGU SISTEM...</button>
+    </div>
+</div>
+
+<div class="chat-container">
+<h2>AI LUXURY GENIUS VIP</h2>
+<div id="timer-wrapper">SESSION EXPIRES IN: <span id="seconds">280</span>s</div>
+
+<select id="ai-select">
+<option value="normal">Standard Intelligence</option>
+<option value="fast">Fast Go 2.1 (Turbo)</option>
+<option value="premium">Premium 2.2 (Gold)</option>
+<option value="vip">VIP 2.3 (Elite)</option>
+<option value="kvip">KVIP 2.4 (Ultra)</option>
+</select>
+
+<div id="status-bar">
+PING: <span id="ping">0</span>ms |
+BAT: <span id="bat">--</span>% |
+SIGNAL: <span id="signal">Excellent</span> |
+LOC: <span id="location">Detecting...</span>
+</div>
+
+<div id="chat-box">
+<div class="msg ai-msg">Selamat datang di AI buatan anak pelajar Indonesia 🇮🇩. SILAHKAN MASUKAN PERTANYAAN ANDA.</div>
+</div>
+
+<div class="input-group">
+<div class="web-btn-container">
+    <a href="https://www.google.com" target="_blank" class="web-link-btn">🌐 Buka Google</a>
+    <a href="https://chat.openai.com" target="_blank" class="web-link-btn">🤖 Buka ChatGPT</a>
+</div>
+<div id="file-info" class="attachment-preview"></div>
+<div class="input-row">
+    <button class="file-btn" onclick="document.getElementById('file-upload').click()">+</button>
+    <input type="file" id="file-upload" class="hidden" onchange="handleFileSelect(this)">
+    <input type="text" id="user-input" placeholder="Tulis instruksi, hitung MTK, atau tempel URL..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">KIRIM</button>
+</div>
+</div>
+
+<div id="overlay">
+<h1>Sesi Selesai</h1>
+<p>Waktu akses eksklusif Anda telah habis.</p>
+<button onclick="location.reload()">RENEW SESSION</button>
+</div>
+</div>
+
+<div class="settings-container">
+    <button class="settings-trigger" onclick="toggleSettings()">⚙️</button>
+    <div class="settings-menu" id="settings-menu">
+        <button onclick="setTheme('dark')">🌙 Mode Malam</button>
+        <button onclick="setTheme('light')">☀️ Mode Terang</button>
+        <button onclick="openHistory()">📜 Riwayat Pesan</button>
+        <button onclick="openGameMenu()" style="background: #d4af37; color: #000; font-weight: bold;">🎮 Main Game</button>
+    </div>
+</div>
+
+<div id="game-menu-screen" class="game-screen">
+    <h2 style="color:#d4af37">AI LUXURY GAMING HUB</h2>
+    <div style="display:grid; gap:15px; max-width:400px; margin:auto">
+        <button class="login-btn" onclick="startSnakes()" style="background: linear-gradient(45deg, #48ff00, #00ffd5);">🐍 ULAR TANGGA VIP</button>
+        <button class="login-btn" onclick="startBlockBlast()">🟦 BLOCK BLAST RGB</button>
+        <button class="login-btn" onclick="startTTT()">⭕ TIC TAC TOE (VS AI)</button>
+        <button class="login-btn" onclick="startRunner()">🏃 SUBWAY RUNNER</button>
+        <button class="login-btn" onclick="closeAllScreens()" style="background:#ff0000; animation:none">KEMBALI KE CHAT</button>
+    </div>
+</div>
+
+<div id="ttt-screen" class="game-screen">
+    <h2 class="rgb-text">TIC TAC TOE VIP</h2>
+    <div class="game-container">
+        <div class="rgb-score">SKOR ANDA: <span id="ttt-player-score">0</span> | AI: <span id="ttt-ai-score">0</span></div>
+        <select id="ttt-diff" style="padding:10px; margin-bottom:10px; border-radius:10px;">
+            <option value="easy">Level: Mudah</option>
+            <option value="normal">Level: Normal</option>
+            <option value="hard">Level: Susah</option>
+        </select>
+        <div class="ttt-grid" id="ttt-grid">
+            <div class="ttt-cell" onclick="makeMove(0)"></div>
+            <div class="ttt-cell" onclick="makeMove(1)"></div>
+            <div class="ttt-cell" onclick="makeMove(2)"></div>
+            <div class="ttt-cell" onclick="makeMove(3)"></div>
+            <div class="ttt-cell" onclick="makeMove(4)"></div>
+            <div class="ttt-cell" onclick="makeMove(5)"></div>
+            <div class="ttt-cell" onclick="makeMove(6)"></div>
+            <div class="ttt-cell" onclick="makeMove(7)"></div>
+            <div class="ttt-cell" onclick="makeMove(8)"></div>
+        </div>
+        <button class="login-btn" onclick="resetTTT()">ULANG GAME</button>
+    </div>
+    <button class="login-btn" onclick="openGameMenu()">BALIK KE MENU GAME</button>
+</div>
+
+<div id="runner-screen" class="game-screen">
+    <h2 class="rgb-text">SUBWAY RUNNER VIP</h2>
+    <div class="game-container">
+        <div class="rgb-score">LVL: <span id="run-lv">1</span> | POIN: <span id="run-score">0</span></div>
+        <canvas id="runner-canvas" width="300" height="400"></canvas>
+        <div class="runner-controls">
+            <div></div><button onclick="runnerAction('up')">⬆️</button><div></div>
+            <button onclick="runnerAction('left')">⬅️</button>
+            <button onclick="runnerAction('down')">⬇️</button>
+            <button onclick="runnerAction('right')">➡️</button>
+        </div>
+    </div>
+    <button class="login-btn" onclick="openGameMenu()">BALIK KE MENU GAME</button>
+</div>
+
+<div id="bb-screen" class="game-screen">
+    <h2 class="rgb-text">BLOCK BLAST PUZZLE</h2>
+    <div class="game-container">
+        <div class="rgb-score">SCORE: <span id="bb-score">0</span></div>
+        <div class="bb-grid" id="bb-grid"></div>
+        <p>Klik kotak untuk menaruh balok warna-warni!</p>
+        <button class="login-btn" onclick="resetBB()">REFRESH BLOK</button>
+    </div>
+    <button class="login-btn" onclick="openGameMenu()">BALIK KE MENU GAME</button>
+</div>
+
+<div id="snakes-screen" class="game-screen">
+    <h2 class="rgb-text">ULAR TANGGA VIP (1-100)</h2>
+    <div class="game-container" style="max-width: 500px;">
+        <div class="rgb-score">
+            STATUS: <span id="snakes-status">Giliran Anda</span><br>
+            POSISI: 👤 <span id="p-pos">1</span> | 🤖 <span id="ai-pos">1</span>
+        </div>
+        <select id="snakes-diff" style="padding:10px; margin-bottom:10px; border-radius:10px; width:100%">
+            <option value="easy">Level: Mudah</option>
+            <option value="normal" selected>Level: Normal</option>
+            <option value="hard">Level: Paling Susah</option>
+        </select>
+        
+        <div id="snakes-board" style="display:grid; grid-template-columns: repeat(10, 1fr); gap:2px; background:#333; padding:5px; margin:10px 0; border: 2px solid #d4af37; height: 300px; overflow: hidden;">
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:center; align-items:center;">
+            <div id="dice-result" style="width:60px; height:60px; background:#fff; color:#000; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; border:3px solid #d4af37;">?</div>
+            <button id="roll-btn" class="login-btn" onclick="playSnakesTurn()" style="margin:0; flex:1">KOCOK DADU 🎲</button>
+        </div>
+        <p style="font-size:12px; color:#ff0000; margin-top:10px;">⚠️ Rintangan: Angka 85 ada ULAR ke 25!</p>
+    </div>
+    <button class="login-btn" onclick="openGameMenu()">BALIK KE MENU GAME</button>
+</div>
+
+<div id="history-screen">
+    <h2 style="color:#d4af37">RIWAYAT PESAN ANDA</h2>
+    <div id="history-content"></div>
+    <button class="login-btn" onclick="closeHistory()">KEMBALI KE CHAT</button>
+</div>
+
+<audio id="bgm" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg"></audio>
+<audio id="rocket-sfx"><source src="https://assets.mixkit.co/active_storage/sfx/1126/1126-preview.mp3" type="audio/mpeg"></audio>
+<audio id="pop-sfx"><source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg"></audio>
+
+<script>
+/* SEMUA LOGIKA ASLI TETAP ADA */
+let timeLeft=280; 
+let cooldown=false;
+let isAuthorized = false;
+let generatedCode = "";
+let selectedFile = null;
+let messageHistory = []; 
+
+function handleFileSelect(input) {
+    if (input.files && input.files[0]) {
+        selectedFile = input.files[0];
+        document.getElementById('file-info').innerText = "📎 Lampiran: " + selectedFile.name;
+        document.getElementById('file-info').style.display = "block";
+    }
+}
+
+function sendCode() {
+    const fname = document.getElementById('first-name').value;
+    const lname = document.getElementById('last-name').value;
+    const age = document.getElementById('user-age').value;
+    if(fname.length > 1 && lname.length > 1 && age > 0) {
+        generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+        alert("INFO: Kode Verifikasi Keamanan Anda: " + generatedCode);
+        document.getElementById('card-step-1').classList.add('hidden');
+        document.getElementById('card-step-2').classList.remove('hidden');
+    } else {
+        alert("Lengkapi Nama dan Umur!");
+    }
+}
+
+function goToCaptcha() {
+    const userCode = document.getElementById('verify-code').value;
+    if(userCode === generatedCode) {
+        document.getElementById('card-step-2').classList.add('hidden');
+        document.getElementById('card-step-3').classList.remove('hidden');
+        startCaptchaTimer();
+    } else {
+        alert("Kode Salah! ❌");
+    }
+}
+
+function startCaptchaTimer() {
+    let count = 10;
+    const timerDisplay = document.getElementById('captcha-timer');
+    const btn = document.getElementById('final-login-btn');
+    const interval = setInterval(() => {
+        count--;
+        timerDisplay.innerText = count;
+        if(count <= 0) {
+            clearInterval(interval);
+            timerDisplay.innerHTML = "✅ TERVERIFIKASI";
+            btn.innerText = "ENTER AI SYSTEM NOW";
+            btn.disabled = false;
+            btn.classList.remove('disabled-btn');
+        }
+    }, 1000);
+}
+
+function verifyLogin() {
+    const fname = document.getElementById('first-name').value;
+    const lname = document.getElementById('last-name').value;
+    const rocket = document.getElementById('rocket-container');
+    const sfx = document.getElementById('rocket-sfx');
+    rocket.classList.add('rocket-launch');
+    sfx.volume = 0.5;
+    sfx.play().catch(e => {});
+    setTimeout(() => {
+        document.getElementById('login-screen').style.display = 'none';
+        rocket.classList.remove('rocket-launch');
+        isAuthorized = true;
+        setTimeout(() => {
+            const sekarang = new Date();
+            const opsiHari = { weekday: 'long' };
+            const opsiTanggal = { day: 'numeric', month: 'long', year: 'numeric' };
+            const namaHari = sekarang.toLocaleDateString('id-ID', opsiHari);
+            const tanggalLengkap = sekarang.toLocaleDateString('id-ID', opsiTanggal);
+            const jam = sekarang.getHours().toString().padStart(2, '0');
+            const menit = sekarang.getMinutes().toString().padStart(2, '0');
+            const pesanAdmin = `<b>[ADMIN SYSTEM]</b><br>Selamat datang, <b>${fname} ${lname}</b>!<br>` +
+                             `Login berhasil pada:<br>` +
+                             `📅 ${namaHari}, ${tanggalLengkap}<br>` +
+                             `⏰ Pukul ${jam}:${menit} WIB<br><br>` +
+                             `<i>Sistem VIP Anda telah aktif otomatis setelah inisialisasi 5 detik.</i>`;
+            appendMessage(pesanAdmin, "ai-msg");
+            startTimer();
+            initDeviceStats();
+        }, 5000);
+    }, 1500);
+}
+
+function startTimer() {
+    setInterval(()=>{
+        if(isAuthorized && timeLeft > 0) {
+            timeLeft--;
+            document.getElementById("seconds").innerText=timeLeft;
+            if(timeLeft<=0) document.getElementById("overlay").style.display="flex";
+        }
+    },1000);
+}
+
+function playMusic() {
+    const audio = document.getElementById("bgm");
+    if (audio.paused) { audio.volume = 0.4; audio.play().catch(e => {}); }
+}
+
+function handleKeyPress(e){ if(e.key==="Enter") sendMessage(); }
+
+async function fetchUltimateData(query) {
+    const q = query.toLowerCase();
+    const encodedQ = encodeURIComponent(query);
+    try {
+        const angkaMatch = q.match(/\d+/g);
+        if (angkaMatch && angkaMatch.length >= 2) {
+            const a = parseFloat(angkaMatch[0]);
+            const b = parseFloat(angkaMatch[1]);
+            let hasilHitung = null;
+            let simbol = "";
+            let jenisOp = "";
+            if (q.includes("tambah") || q.includes("jumlah") || q.includes("+")) {
+                hasilHitung = a + b; simbol = "+"; jenisOp = "Penjumlahan";
+            } else if (q.includes("kurang") || q.includes("selisih") || q.includes("minus") || q.includes("-")) {
+                hasilHitung = a - b; simbol = "-"; jenisOp = "Pengurangan";
+            } else if (q.includes("kali") || q.includes("x") || q.includes("*")) {
+                hasilHitung = a * b; simbol = "x"; jenisOp = "Perkalian";
+            } else if (q.includes("bagi") || q.includes("/")) {
+                if (b !== 0) { hasilHitung = a / b; simbol = "/"; jenisOp = "Pembagian"; }
+                else return `<b>[ERROR SYSTEM]</b><br>❌ Pembagian dengan nol tidak diperbolehkan secara matematis.`;
+            }
+            if (hasilHitung !== null) {
+                return `<b>[VIP MATH CALCULATOR]</b><br>📊 Operasi: <i>${jenisOp}</i><br>📝 Perhitungan: <code>${a} ${simbol} ${b}</code><br><b>✅ Hasil Akhir: ${hasilHitung}</b>`;
+            }
+        }
+        if (q.includes("grafik") || q.includes("plot")) {
+            let func = q.replace(/grafik|plot/g, "").trim();
+            if (func === "") func = "x";
+            const graphUrl = `https://image-charts.com/chart?cht=ls&chs=450x250&chd=t:0&chfd=${encodeURIComponent(func)},-10,10,1&chxt=x,y&chg=1,1&chtt=Grafik+Fungsi:+${encodeURIComponent(func)}&chf=bg,s,141414&chco=d4af37`;
+            return `<b>[VISUAL GRAPH ENGINE]</b><br>Visualisasi fungsi: <code>${func}</code><br><img src="${graphUrl}" class="gif-result" style="border: 1px solid #d4af37; margin-top:10px;">`;
+        }
+        const ddgResp = await fetch(`https://api.duckduckgo.com/?q=${encodedQ}&format=json&no_html=1`);
+        const ddgData = await ddgResp.json();
+        if (ddgData.AbstractText) return `<b>[SEARCH ENGINE]</b><br>${ddgData.AbstractText}`;
+        return null;
+    } catch (e) { return null; }
+}
+
+async function sendMessage(){
+    if(cooldown || !isAuthorized) return;
+    const text=document.getElementById("user-input").value.trim();
+    const mode=document.getElementById("ai-select").value;
+    if(text=="" && !selectedFile && timeLeft<=0) return;
+    cooldown=true;
+    let tempId = "temp-" + Date.now();
+    let tempDiv = document.createElement("div");
+    tempDiv.className = "msg ai-msg";
+    tempDiv.id = tempId;
+    tempDiv.innerHTML = "<i>Sedang mengirim pesan... (Delay 2s)</i>";
+    document.getElementById("chat-box").appendChild(tempDiv);
+    document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
+    setTimeout(async () => {
+        document.getElementById(tempId).remove();
+        if(text !== "") messageHistory.push({ time: new Date().toLocaleTimeString(), text: text });
+        let displayMsg = text;
+        if(selectedFile) displayMsg += ` <br><small><i>(File: ${selectedFile.name})</i></small>`;
+        appendMessage(displayMsg,"user-msg");
+        let loadingId = "load-" + Date.now();
+        let loadingDiv = document.createElement("div");
+        loadingDiv.className = "msg ai-msg";
+        loadingDiv.id = loadingId;
+        loadingDiv.innerHTML = "<i>AI Menghubungkan ke API Hybrid System...</i>";
+        document.getElementById("chat-box").appendChild(loadingDiv);
+        document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
+        document.getElementById("user-input").value="";
+        document.getElementById('file-info').style.display = "none";
+        let aiDelay = (mode === "normal") ? 5000 : 3000;
+        setTimeout(async () => {
+            let result = await fetchUltimateData(text);
+            document.getElementById(loadingId).remove();
+            if (result) appendMessage(result, "ai-msg");
+            else appendMessage(generateAIResponse(text.toLowerCase(), selectedFile), "ai-msg");
+            selectedFile = null;
+            cooldown=false;
+        }, aiDelay);
+    }, 2000); 
+}
+
+function appendMessage(text,cls){
+    let d=document.createElement("div"); d.className="msg "+cls; d.innerHTML=text;
+    const box = document.getElementById("chat-box"); box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+
+function generateAIResponse(q, file){
+    if (file) return `<b>[SYSTEM]</b> Analisis file <b>${file.name}</b> selesai.`;
+    if(q.includes("halo") || q.includes("p")) return "<b>[AI]</b> Halo! Saya AI Luxury VIP. Apa yang bisa dibantu?";
+    return "<b>[AI SYSTEM]</b> Permintaan diproses. Gunakan perintah 'hitung' atau 'grafik'.";
+}
+
+function initDeviceStats() {
+    if (navigator.getBattery) navigator.getBattery().then(bat => document.getElementById("bat").innerText = Math.floor(bat.level * 100));
+    setInterval(()=> document.getElementById("ping").innerText = Math.floor(Math.random()*15)+5, 3000);
+}
+
+function toggleSettings() {
+    const menu = document.getElementById('settings-menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function setTheme(mode) {
+    if(mode === 'light') document.body.classList.add('light-mode');
+    else document.body.classList.remove('light-mode');
+    toggleSettings();
+}
+
+function openHistory() {
+    const screen = document.getElementById('history-screen');
+    const content = document.getElementById('history-content');
+    content.innerHTML = "";
+    messageHistory.forEach(item => content.innerHTML += `<div class="history-card"><small>${item.time}</small><br>${item.text}</div>`);
+    screen.style.display = "block";
+    toggleSettings();
+}
+
+function closeHistory() { document.getElementById('history-screen').style.display = "none"; }
+
+/* ================== GAME LOGIC ================== */
+
+function closeAllScreens() {
+    document.querySelectorAll('.game-screen, #history-screen').forEach(s => s.style.display = 'none');
+}
+
+function openGameMenu() {
+    closeAllScreens();
+    document.getElementById('game-menu-screen').style.display = 'block';
+    toggleSettings();
+}
+
+// 1. BLOCK BLAST
+let bbScore = 0;
+const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+
+function startBlockBlast() {
+    closeAllScreens();
+    document.getElementById('bb-screen').style.display = 'block';
+    resetBB();
+}
+
+function resetBB() {
+    const grid = document.getElementById('bb-grid');
+    grid.innerHTML = '';
+    bbScore = 0;
+    document.getElementById('bb-score').innerText = bbScore;
+    for(let i=0; i<64; i++) {
+        let cell = document.createElement('div');
+        cell.className = 'bb-cell';
+        cell.onclick = () => {
+            cell.style.background = colors[Math.floor(Math.random()*colors.length)];
+            bbScore += 10;
+            document.getElementById('bb-score').innerText = bbScore;
+            document.getElementById('pop-sfx').play();
+        };
+        grid.appendChild(cell);
+    }
+}
+
+// 2. TIC TAC TOE
+let tttBoard = ["","","","","","","","",""];
+let tttPlayerScore = 0;
+let tttAiScore = 0;
+let tttActive = true;
+
+function startTTT() {
+    closeAllScreens();
+    document.getElementById('ttt-screen').style.display = 'block';
+    resetTTT();
+}
+
+function resetTTT() {
+    tttBoard = ["","","","","","","","",""];
+    tttActive = true;
+    document.querySelectorAll('.ttt-cell').forEach(c => {
+        c.innerText = '';
+        c.className = 'ttt-cell';
+    });
+}
+
+function makeMove(i) {
+    if(tttBoard[i] === "" && tttActive) {
+        tttBoard[i] = "X";
+        const cell = document.getElementsByClassName('ttt-cell')[i];
+        cell.innerText = "X";
+        cell.classList.add('rgb-x');
+        checkWinner();
+        if(tttActive) setTimeout(aiMove, 500);
+    }
+}
+
+function aiMove() {
+    let empty = tttBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+    if(empty.length > 0) {
+        let move = empty[Math.floor(Math.random()*empty.length)];
+        tttBoard[move] = "O";
+        const cell = document.getElementsByClassName('ttt-cell')[move];
+        cell.innerText = "O";
+        cell.classList.add('rgb-o');
+        checkWinner();
+    }
+}
+
+function checkWinner() {
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    for(let w of wins) {
+        if(tttBoard[w[0]] && tttBoard[w[0]] === tttBoard[w[1]] && tttBoard[w[0]] === tttBoard[w[2]]) {
+            tttActive = false;
+            if(tttBoard[w[0]] === "X") { tttPlayerScore++; alert("Anda Menang!"); }
+            else { tttAiScore++; alert("AI Menang!"); }
+            document.getElementById('ttt-player-score').innerText = tttPlayerScore;
+            document.getElementById('ttt-ai-score').innerText = tttAiScore;
+            if(tttPlayerScore >= 3 || tttAiScore >= 3) {
+                alert("Game Selesai!");
+                tttPlayerScore = 0; tttAiScore = 0;
+            }
+            return;
+        }
+    }
+}
+
+// 3. RUNNER GAME
+let runScore = 0;
+let runLevel = 1;
+let runnerY = 350;
+let runnerX = 135;
+let obstacles = [];
+let gameInterval;
+
+function startRunner() {
+    closeAllScreens();
+    document.getElementById('runner-screen').style.display = 'block';
+    runScore = 0; runLevel = 1; obstacles = [];
+    gameInterval = setInterval(updateRunner, 50);
+}
+
+function updateRunner() {
+    const canvas = document.getElementById('runner-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,300,400);
+    
+    // Draw Tracks
+    ctx.strokeStyle = "#555";
+    ctx.lineWidth = 2;
+    [50, 150, 250].forEach(x => {
+        ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,400); ctx.stroke();
+    });
+
+    // Player (RGB)
+    ctx.fillStyle = "#d4af37";
+    ctx.fillRect(runnerX, runnerY, 30, 30);
+
+    // Obstacles (Train)
+    if(Math.random() < 0.05) obstacles.push({x: [35, 135, 235][Math.floor(Math.random()*3)], y: -50});
+    
+    obstacles.forEach((obs, i) => {
+        obs.y += 5 + (runLevel * 0.5);
+        ctx.fillStyle = "red";
+        ctx.fillRect(obs.x, obs.y, 30, 60);
+        
+        // Collision
+        if(obs.y > 320 && obs.y < 380 && obs.x === runnerX) {
+            clearInterval(gameInterval);
+            alert("Game Over! Skor: " + runScore);
+            openGameMenu();
+        }
+        
+        if(obs.y > 400) {
+            obstacles.splice(i, 1);
+            runScore += 10;
+            if(runScore % 100 === 0 && runLevel < 500) runLevel++;
+            document.getElementById('run-score').innerText = runScore;
+            document.getElementById('run-lv').innerText = runLevel;
+        }
+    });
+}
+
+function runnerAction(dir) {
+    if(dir === 'left' && runnerX > 50) runnerX -= 100;
+    if(dir === 'right' && runnerX < 200) runnerX += 100;
+    if(dir === 'up') { runnerY -= 50; setTimeout(()=>runnerY += 50, 300); }
+}
+
+/* ================== SNAKES & LADDERS LOGIC (NEW) ================== */
+let playerPos = 1;
+let aiPos = 1;
+let snakesActive = true;
+let isAiTurn = false;
+
+function startSnakes() {
+    closeAllScreens();
+    document.getElementById('snakes-screen').style.display = 'block';
+    initSnakesBoard();
+    resetSnakes();
+}
+
+function initSnakesBoard() {
+    const board = document.getElementById('snakes-board');
+    board.innerHTML = '';
+    // Buat 100 kotak (visual grid dari 100 ke 1)
+    for (let i = 100; i >= 1; i--) {
+        let cell = document.createElement('div');
+        cell.id = 'snake-cell-' + i;
+        cell.style.cssText = "aspect-ratio:1; background:#222; border:1px solid #444; font-size:9px; display:flex; align-items:center; justify-content:center; position:relative;";
+        cell.innerText = i;
+        if(i === 85) cell.style.background = "#500"; // Warna Ular
+        if(i === 25) cell.style.background = "#050"; // Warna Tujuan Ular
+        board.appendChild(cell);
+    }
+    updateSnakesPawn();
+}
+
+function resetSnakes() {
+    playerPos = 1; aiPos = 1;
+    snakesActive = true; isAiTurn = false;
+    document.getElementById('snakes-status').innerText = "Giliran Anda";
+    updateSnakesPawn();
+}
+
+function updateSnakesPawn() {
+    document.querySelectorAll('.snake-pawn').forEach(p => p.remove());
+    
+    // Player Pawn
+    const pCell = document.getElementById('snake-cell-' + playerPos);
+    if(pCell) {
+        const pMark = document.createElement('div');
+        pMark.className = 'snake-pawn';
+        pMark.innerHTML = '👤';
+        pMark.style.cssText = "position:absolute; z-index:2; font-size:14px; bottom:0; left:0;";
+        pCell.appendChild(pMark);
+    }
+
+    // AI Pawn
+    const aiCell = document.getElementById('snake-cell-' + aiPos);
+    if(aiCell) {
+        const aiMark = document.createElement('div');
+        aiMark.className = 'snake-pawn';
+        aiMark.innerHTML = '🤖';
+        aiMark.style.cssText = "position:absolute; z-index:2; font-size:14px; top:0; right:0;";
+        aiCell.appendChild(aiMark);
+    }
+
+    document.getElementById('p-pos').innerText = playerPos;
+    document.getElementById('ai-pos').innerText = aiPos;
+}
+
+async function playSnakesTurn() {
+    if(!snakesActive || isAiTurn) return;
+    
+    let roll = Math.floor(Math.random() * 6) + 1;
+    document.getElementById('dice-result').innerText = roll;
+    
+    playerPos += roll;
+    if(playerPos >= 100) { playerPos = 100; updateSnakesPawn(); alert("ANDA MENANG! 🎉"); snakesActive = false; return; }
+    
+    // Rintangan Ular 85 -> 25
+    if(playerPos === 85) { alert("Hati-hati! Anda digigit ular! Turun ke 25"); playerPos = 25; }
+    
+    updateSnakesPawn();
+
+    if(roll === 6) {
+        document.getElementById('snakes-status').innerText = "DAPAT 6! Kocok lagi!";
+    } else {
+        isAiTurn = true;
+        document.getElementById('snakes-status').innerText = "Giliran AI...";
+        setTimeout(aiSnakesMove, 1500);
+    }
+}
+
+async function aiSnakesMove() {
+    if(!snakesActive) return;
+    const diff = document.getElementById('snakes-diff').value;
+    
+    let roll = Math.floor(Math.random() * 6) + 1;
+    
+    // AI Difficulty Logic
+    if(diff === 'hard' && roll < 4 && aiPos < playerPos) roll += 2; // AI Sedikit curang di mode susah
+
+    document.getElementById('dice-result').innerText = roll;
+    aiPos += roll;
+    if(aiPos >= 100) { aiPos = 100; updateSnakesPawn(); alert("AI MENANG! 🤖"); snakesActive = false; return; }
+
+    if(aiPos === 85) { aiPos = 25; } // AI juga kena ular
+
+    updateSnakesPawn();
+
+    if(roll === 6) {
+        setTimeout(aiSnakesMove, 1000);
+    } else {
+        isAiTurn = false;
+        document.getElementById('snakes-status').innerText = "Giliran Anda";
+    }
+}
+</script>
+
+</body>
+</html>
